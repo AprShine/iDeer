@@ -81,10 +81,6 @@
       text-wrap: balance;
       letter-spacing: -0.05em;
     }
-    .feature-card {
-      min-height: 168px;
-    }
-    .feature-card p,
     .source-pill p {
       color: #475569;
     }
@@ -105,6 +101,11 @@
       background: #0f172a;
       color: white;
       box-shadow: 0 10px 28px rgba(15, 23, 42, 0.22);
+    }
+    .delivery-toggle[data-active="true"] {
+      background: #0f766e;
+      color: white;
+      box-shadow: 0 10px 24px rgba(15, 118, 110, 0.22);
     }
     .log-view {
       max-height: 280px;
@@ -173,181 +174,201 @@
   </header>
 
   <main class="mx-auto max-w-6xl px-4 py-10 md:px-8 md:py-14">
-    <section class="grid gap-8 lg:grid-cols-[1.15fr_0.95fr] lg:items-start">
-      <div class="space-y-8">
-        <div class="animate-rise">
-          <span class="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.24em] text-sea">
-            今日趋势速递
-          </span>
-          <p class="mt-5 font-display text-[12px] font-semibold uppercase tracking-[0.28em] text-slate-500">
-            GitHub · HuggingFace · X · arXiv
-          </p>
-          <h2 class="hero-title mt-3 max-w-xl font-display text-[2.55rem] font-extrabold leading-[1.02] text-ink md:text-[4.35rem]">
-            今天什么值得看？
-          </h2>
-        </div>
+    <section class="space-y-6">
+      <div class="animate-rise max-w-3xl">
+        <span class="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.24em] text-sea">
+          今日趋势速递
+        </span>
+        <p class="mt-5 font-display text-[12px] font-semibold uppercase tracking-[0.28em] text-slate-500">
+          GitHub · HuggingFace · X · arXiv
+        </p>
+        <h2 class="hero-title mt-3 max-w-xl font-display text-[2.55rem] font-extrabold leading-[1.02] text-ink md:text-[4.35rem]">
+          今天什么值得看？
+        </h2>
+      </div>
 
-        <div class="grid gap-4 sm:grid-cols-2">
-          <div class="feature-card glass-panel surface-line rounded-3xl border border-white/60 p-5 shadow-panel">
-            <p class="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">01</p>
-            <h3 class="mt-3 text-lg font-bold tracking-[-0.02em] text-ink">快速版</h3>
-            <p class="mt-2 text-[15px] leading-7">只填邮箱，按当前勾选的数据源发送今日汇总。</p>
-          </div>
-          <div class="feature-card glass-panel surface-line rounded-3xl border border-white/60 p-5 shadow-panel">
-            <p class="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">02</p>
-            <h3 class="mt-3 text-lg font-bold tracking-[-0.02em] text-ink">定制版</h3>
-            <p class="mt-2 text-[15px] leading-7">补充兴趣和 Scholar 链接，生成一次性的专属推荐。</p>
-          </div>
-        </div>
+      <div id="mail-warning" class="hidden rounded-3xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm leading-7 text-amber-800 shadow-soft">
+        服务器还没有配置发件邮箱。请先打开 <a href="/daily-recommender/admin" class="font-semibold underline">Admin</a> 完成 SMTP 配置，否则无法实际发送邮件。
+      </div>
 
-        <div class="glass-panel rounded-[2rem] border border-white/70 p-6 shadow-panel">
+      <section class="glass-panel rounded-[2rem] border border-white/70 p-6 shadow-panel md:p-7">
+        <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <div>
-              <p class="text-sm font-bold uppercase tracking-[0.22em] text-slate-400">数据源</p>
-              <h3 class="mt-2 text-2xl font-bold tracking-[-0.02em] text-ink">这次想看哪些来源</h3>
-            </div>
+            <p class="text-sm font-bold uppercase tracking-[0.22em] text-slate-400">发送</p>
+            <h3 class="mt-2 text-2xl font-bold tracking-[-0.02em] text-ink" id="form-title">快速发送今天的汇总</h3>
           </div>
-
-          <div class="mt-6 grid gap-3 sm:grid-cols-2">
-            <button type="button" class="source-pill rounded-2xl border border-slate-200 bg-white px-4 py-4 text-left shadow-soft" data-source-toggle="github" onclick="toggleSource('github')">
-              <div class="flex items-center justify-between">
-                <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-900 text-xs font-extrabold tracking-[0.2em] text-white">GH</span>
-                <span class="rounded-full bg-slate-100 px-2 py-1 text-[11px] font-semibold text-slate-500">趋势</span>
-              </div>
-              <h4 class="mt-4 text-[17px] font-bold tracking-[-0.02em] text-ink">GitHub</h4>
-              <p class="mt-2 text-[15px] leading-7">开源项目、框架和工具的今日增量。</p>
-            </button>
-
-            <button type="button" class="source-pill rounded-2xl border border-slate-200 bg-white px-4 py-4 text-left shadow-soft" data-source-toggle="huggingface" onclick="toggleSource('huggingface')">
-              <div class="flex items-center justify-between">
-                <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-amber-300 text-xs font-extrabold tracking-[0.2em] text-amber-950">HF</span>
-                <span class="rounded-full bg-amber-50 px-2 py-1 text-[11px] font-semibold text-amber-700">模型 / 论文</span>
-              </div>
-              <h4 class="mt-4 text-[17px] font-bold tracking-[-0.02em] text-ink">HuggingFace</h4>
-              <p class="mt-2 text-[15px] leading-7">模型、论文和社区热度变化。</p>
-            </button>
-
-            <button type="button" class="source-pill rounded-2xl border border-slate-200 bg-white px-4 py-4 text-left shadow-soft" data-source-toggle="twitter" onclick="toggleSource('twitter')">
-              <div class="flex items-center justify-between">
-                <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-black text-xs font-extrabold tracking-[0.2em] text-white">X</span>
-                <span id="twitter-status-badge" class="rounded-full bg-slate-100 px-2 py-1 text-[11px] font-semibold text-slate-500">可选</span>
-              </div>
-              <h4 class="mt-4 text-[17px] font-bold tracking-[-0.02em] text-ink">X / Twitter</h4>
-              <p class="mt-2 text-[15px] leading-7">账号池动态，或按兴趣做一次性发现。</p>
-            </button>
-
-            <button type="button" class="source-pill rounded-2xl border border-slate-200 bg-white px-4 py-4 text-left shadow-soft" data-source-toggle="arxiv" onclick="toggleSource('arxiv')">
-              <div class="flex items-center justify-between">
-                <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl text-xs font-extrabold tracking-[0.2em] text-white" style="background-color:#b31b1b">Ax</span>
-                <span class="rounded-full bg-slate-100 px-2 py-1 text-[11px] font-semibold text-slate-500">可选</span>
-              </div>
-              <h4 class="mt-4 text-[17px] font-bold tracking-[-0.02em] text-ink">arXiv</h4>
-              <p class="mt-2 text-[15px] leading-7">按你的兴趣筛选当天值得看的论文。</p>
-            </button>
+          <div class="animate-drift inline-flex items-center rounded-3xl bg-gradient-to-br from-emerald-100 to-cyan-50 px-4 py-3 text-xs font-bold uppercase tracking-[0.22em] text-sea">
+            一封邮件送达
           </div>
         </div>
-      </div>
 
-      <div class="space-y-6">
-        <div id="mail-warning" class="hidden rounded-3xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm leading-7 text-amber-800 shadow-soft">
-          服务器还没有配置发件邮箱。请先打开 <a href="/daily-recommender/admin" class="font-semibold underline">Admin</a> 完成 SMTP 配置，否则无法实际发送邮件。
+        <div class="mt-5 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div class="glass-panel inline-flex rounded-2xl border border-slate-200/80 p-1 shadow-soft">
+            <button type="button" class="delivery-toggle rounded-xl px-3 py-2 text-sm font-semibold text-slate-600" data-delivery-mode="source_emails" data-active="false" onclick="switchDeliveryMode('source_emails')">
+              逐封
+            </button>
+            <button type="button" class="delivery-toggle rounded-xl px-3 py-2 text-sm font-semibold text-slate-600" data-delivery-mode="combined_report" data-active="true" onclick="switchDeliveryMode('combined_report')">
+              合并
+            </button>
+            <button type="button" class="delivery-toggle rounded-xl px-3 py-2 text-sm font-semibold text-slate-600" data-delivery-mode="both" data-active="false" onclick="switchDeliveryMode('both')">
+              两者都发
+            </button>
+          </div>
+          <p id="delivery-mode-hint" class="text-sm leading-7 text-slate-500">当前只发送一封跨来源汇总邮件。</p>
         </div>
 
-        <section class="glass-panel rounded-[2rem] border border-white/70 p-6 shadow-panel">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-sm font-bold uppercase tracking-[0.22em] text-slate-400">发送</p>
-              <h3 class="mt-2 text-2xl font-bold tracking-[-0.02em] text-ink" id="form-title">快速发送今天的汇总</h3>
-            </div>
-            <div class="animate-drift rounded-3xl bg-gradient-to-br from-emerald-100 to-cyan-50 px-4 py-3 text-xs font-bold uppercase tracking-[0.22em] text-sea">
-              一封邮件送达
-            </div>
-          </div>
-
-          <div id="quick-pane" class="mt-6 space-y-5">
-            <div>
-              <label for="quick-email" class="mb-2 block text-sm font-semibold text-slate-700">邮箱</label>
-              <input id="quick-email" type="email" placeholder="you@example.com"
-                     class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-sea focus:ring-4 focus:ring-emerald-100">
-            </div>
-            <div class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-7 text-slate-700">
-              会按照你当前勾选的数据源整理成一封邮件，并发送到这个邮箱。
-            </div>
-          </div>
-
-          <div id="custom-pane" class="mt-6 hidden space-y-5">
-            <div>
-              <label for="custom-email" class="mb-2 block text-sm font-semibold text-slate-700">邮箱</label>
-              <input id="custom-email" type="email" placeholder="you@example.com"
-                     class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-sea focus:ring-4 focus:ring-emerald-100">
-            </div>
-
-            <div>
-              <label for="custom-interest" class="mb-2 block text-sm font-semibold text-slate-700">研究兴趣 / 兴趣点</label>
-              <textarea id="custom-interest" rows="6" placeholder="例如：Agent evaluation, long-context systems, coding agents, scientific discovery..."
-                        class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm leading-7 outline-none transition focus:border-sea focus:ring-4 focus:ring-emerald-100"></textarea>
-            </div>
-
-            <div>
-              <div class="mb-2 flex items-center justify-between gap-3">
-                <label for="custom-scholar" class="block text-sm font-semibold text-slate-700">Google Scholar 链接</label>
-                <span class="rounded-full bg-slate-100 px-2 py-1 text-[11px] font-semibold text-slate-500">可选</span>
+        <div id="quick-pane" class="mt-6">
+          <div class="rounded-[1.7rem] border border-white/80 bg-white/90 p-4 shadow-soft">
+            <div class="grid gap-4 lg:grid-cols-[180px_minmax(0,1fr)_auto] lg:items-center">
+              <div>
+                <p class="text-xs font-bold uppercase tracking-[0.22em] text-slate-400">输入邮箱，收到汇总</p>
+                <p class="mt-2 text-sm leading-6 text-slate-600">输入邮箱，直接发送今日汇总。</p>
               </div>
-              <input id="custom-scholar" type="url" placeholder="https://scholar.google.com/citations?user=..."
-                     class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-sea focus:ring-4 focus:ring-emerald-100">
-              <p class="mt-2 text-xs leading-6 text-slate-600">仅本次生效。若同时勾选 X / Twitter，会辅助一次性账号 discovery。</p>
+              <div>
+                <label for="quick-email" class="mb-2 block text-sm font-semibold text-slate-700 lg:sr-only">邮箱</label>
+                <input id="quick-email" type="email" placeholder="you@example.com"
+                       class="h-14 w-full rounded-2xl border border-slate-200 bg-white px-4 text-base outline-none transition focus:border-sea focus:ring-4 focus:ring-emerald-100">
+              </div>
+              <button type="button" data-send-button onclick="submitRun()"
+                      class="inline-flex h-14 items-center justify-center gap-2 rounded-2xl bg-ink px-6 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-55">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10l9-7 9 7-9 7-9-7z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 21l3-2 3 2"/>
+                </svg>
+                <span data-send-button-label>发送今日汇总</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div id="custom-pane" class="mt-6 hidden">
+          <div class="rounded-[1.7rem] border border-white/80 bg-white/90 p-4 shadow-soft">
+            <div class="grid gap-5 xl:grid-cols-[220px_minmax(0,1fr)]">
+              <div>
+                <p class="text-xs font-bold uppercase tracking-[0.22em] text-slate-400">Custom Mode</p>
+                <p class="mt-2 text-sm leading-7 text-slate-600">补充兴趣和 Scholar 链接，生成一次性的专属推荐。</p>
+              </div>
+              <div class="grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+                <div class="md:col-span-2">
+                  <label for="custom-email" class="mb-2 block text-sm font-semibold text-slate-700">邮箱</label>
+                  <input id="custom-email" type="email" placeholder="you@example.com"
+                         class="h-14 w-full rounded-2xl border border-slate-200 bg-white px-4 text-base outline-none transition focus:border-sea focus:ring-4 focus:ring-emerald-100">
+                </div>
+
+                <div>
+                  <label for="custom-interest" class="mb-2 block text-sm font-semibold text-slate-700">研究兴趣 / 兴趣点</label>
+                  <textarea id="custom-interest" rows="6" placeholder="例如：Agent evaluation, long-context systems, coding agents, scientific discovery..."
+                            class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm leading-7 outline-none transition focus:border-sea focus:ring-4 focus:ring-emerald-100"></textarea>
+                </div>
+
+                <div class="space-y-4">
+                  <div>
+                    <div class="mb-2 flex items-center justify-between gap-3">
+                      <label for="custom-scholar" class="block text-sm font-semibold text-slate-700">Google Scholar 链接</label>
+                      <span class="rounded-full bg-slate-100 px-2 py-1 text-[11px] font-semibold text-slate-500">可选</span>
+                    </div>
+                    <input id="custom-scholar" type="url" placeholder="https://scholar.google.com/citations?user=..."
+                           class="h-14 w-full rounded-2xl border border-slate-200 bg-white px-4 text-sm outline-none transition focus:border-sea focus:ring-4 focus:ring-emerald-100">
+                    <p class="mt-2 text-xs leading-6 text-slate-600">仅本次生效。若同时勾选 X / Twitter，会辅助一次性账号 discovery。</p>
+                  </div>
+
+                  <div class="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm leading-7 text-emerald-800">
+                    本次输入不会写入服务器全局配置，也不会覆盖后台里的默认兴趣描述。
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div class="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm leading-7 text-emerald-800">
-              本次输入不会写入服务器全局配置，也不会覆盖后台里的默认兴趣描述。
+            <div class="mt-5 flex justify-end">
+              <button type="button" data-send-button onclick="submitRun()"
+                      class="inline-flex h-14 items-center justify-center gap-2 rounded-2xl bg-ink px-6 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-55">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10l9-7 9 7-9 7-9-7z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 21l3-2 3 2"/>
+                </svg>
+                <span data-send-button-label>发送定制版 Daily Trend</span>
+              </button>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div class="mt-6 flex flex-col gap-3 sm:flex-row">
-            <button type="button" id="send-button" onclick="submitRun()"
-                    class="inline-flex flex-1 items-center justify-center gap-2 rounded-2xl bg-ink px-5 py-3.5 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-55">
-              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10l9-7 9 7-9 7-9-7z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 21l3-2 3 2"/>
-              </svg>
-              <span id="send-button-label">发送今日汇总</span>
-            </button>
-            <a data-github-link href="https://github.com/LiYu0524/daily-recommender" target="_blank" rel="noreferrer"
-               class="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-3.5 text-sm font-bold text-slate-700 shadow-soft transition hover:border-slate-300 hover:text-ink">
-              打开仓库
-            </a>
+      <section class="glass-panel rounded-[2rem] border border-white/70 p-6 shadow-panel md:p-7">
+        <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p class="text-sm font-bold uppercase tracking-[0.22em] text-slate-400">数据源</p>
+            <h3 class="mt-2 text-2xl font-bold tracking-[-0.02em] text-ink">这次想看哪些来源</h3>
           </div>
-        </section>
+          <p class="text-sm leading-7 text-slate-500">勾选后会整理成一封邮件统一发出。</p>
+        </div>
 
-        <section id="run-panel" class="hidden glass-panel rounded-[2rem] border border-white/70 p-6 shadow-panel">
-          <div class="flex items-center justify-between gap-4">
-            <div>
-              <p class="text-sm font-bold uppercase tracking-[0.22em] text-slate-400">Progress</p>
-              <h3 class="mt-2 text-xl font-extrabold text-ink">任务执行中</h3>
+        <div class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <button type="button" class="source-pill rounded-2xl border border-slate-200 bg-white px-4 py-5 text-left shadow-soft" data-source-toggle="github" onclick="toggleSource('github')">
+            <div class="flex items-center justify-between">
+              <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-900 text-xs font-extrabold tracking-[0.2em] text-white">GH</span>
+              <span class="rounded-full bg-slate-100 px-2 py-1 text-[11px] font-semibold text-slate-500">趋势</span>
             </div>
-            <span id="run-status-text" class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">初始化</span>
-          </div>
+            <h4 class="mt-4 text-[17px] font-bold tracking-[-0.02em] text-ink">GitHub</h4>
+            <p class="mt-2 text-[15px] leading-7">开源项目、框架和工具的今日增量。</p>
+          </button>
 
-          <div class="mt-5 h-2 overflow-hidden rounded-full bg-slate-100">
-            <div id="progress-bar" class="h-full rounded-full bg-gradient-to-r from-sea to-cyan-500 transition-all duration-500" style="width: 0%"></div>
-          </div>
-
-          <div id="run-log" class="log-view mt-4 rounded-2xl bg-slate-950 px-4 py-3 text-slate-100"></div>
-        </section>
-
-        <section id="results-panel" class="hidden glass-panel rounded-[2rem] border border-white/70 p-6 shadow-panel">
-          <div class="flex items-center justify-between gap-4">
-            <div>
-              <p class="text-sm font-bold uppercase tracking-[0.22em] text-slate-400">Results</p>
-              <h3 class="mt-2 text-xl font-extrabold text-ink">已生成的内容</h3>
+          <button type="button" class="source-pill rounded-2xl border border-slate-200 bg-white px-4 py-5 text-left shadow-soft" data-source-toggle="huggingface" onclick="toggleSource('huggingface')">
+            <div class="flex items-center justify-between">
+              <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-300 text-xs font-extrabold tracking-[0.2em] text-amber-950">HF</span>
+              <span class="rounded-full bg-amber-50 px-2 py-1 text-[11px] font-semibold text-amber-700">模型 / 论文</span>
             </div>
-            <button type="button" onclick="closeResults()" class="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-500 transition hover:text-ink">
-              收起
-            </button>
+            <h4 class="mt-4 text-[17px] font-bold tracking-[-0.02em] text-ink">HuggingFace</h4>
+            <p class="mt-2 text-[15px] leading-7">模型、论文和社区热度变化。</p>
+          </button>
+
+          <button type="button" class="source-pill rounded-2xl border border-slate-200 bg-white px-4 py-5 text-left shadow-soft" data-source-toggle="twitter" onclick="toggleSource('twitter')">
+            <div class="flex items-center justify-between">
+              <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-black text-xs font-extrabold tracking-[0.2em] text-white">X</span>
+              <span id="twitter-status-badge" class="rounded-full bg-slate-100 px-2 py-1 text-[11px] font-semibold text-slate-500">可选</span>
+            </div>
+            <h4 class="mt-4 text-[17px] font-bold tracking-[-0.02em] text-ink">X / Twitter</h4>
+            <p class="mt-2 text-[15px] leading-7">账号池动态，或按兴趣做一次性发现。</p>
+          </button>
+
+          <button type="button" class="source-pill rounded-2xl border border-slate-200 bg-white px-4 py-5 text-left shadow-soft" data-source-toggle="arxiv" onclick="toggleSource('arxiv')">
+            <div class="flex items-center justify-between">
+              <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl text-xs font-extrabold tracking-[0.2em] text-white" style="background-color:#b31b1b">Ax</span>
+              <span class="rounded-full bg-slate-100 px-2 py-1 text-[11px] font-semibold text-slate-500">可选</span>
+            </div>
+            <h4 class="mt-4 text-[17px] font-bold tracking-[-0.02em] text-ink">arXiv</h4>
+            <p class="mt-2 text-[15px] leading-7">按你的兴趣筛选当天值得看的论文。</p>
+          </button>
+        </div>
+      </section>
+
+      <section id="run-panel" class="hidden glass-panel rounded-[2rem] border border-white/70 p-6 shadow-panel">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <p class="text-sm font-bold uppercase tracking-[0.22em] text-slate-400">Progress</p>
+            <h3 class="mt-2 text-xl font-extrabold text-ink">任务执行中</h3>
           </div>
-          <div id="results-content" class="mt-5 space-y-4"></div>
-        </section>
-      </div>
+          <span id="run-status-text" class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">初始化</span>
+        </div>
+
+        <div class="mt-5 h-2 overflow-hidden rounded-full bg-slate-100">
+          <div id="progress-bar" class="h-full rounded-full bg-gradient-to-r from-sea to-cyan-500 transition-all duration-500" style="width: 0%"></div>
+        </div>
+
+        <div id="run-log" class="log-view mt-4 rounded-2xl bg-slate-950 px-4 py-3 text-slate-100"></div>
+      </section>
+
+      <section id="results-panel" class="hidden glass-panel rounded-[2rem] border border-white/70 p-6 shadow-panel">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <p class="text-sm font-bold uppercase tracking-[0.22em] text-slate-400">Results</p>
+            <h3 class="mt-2 text-xl font-extrabold text-ink">已生成的内容</h3>
+          </div>
+          <button type="button" onclick="closeResults()" class="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-500 transition hover:text-ink">
+            收起
+          </button>
+        </div>
+        <div id="results-content" class="mt-5 space-y-4"></div>
+      </section>
     </section>
   </main>
 
@@ -361,6 +382,7 @@
   <script>
     const state = {
       mode: 'quick',
+      deliveryMode: 'combined_report',
       selectedSources: new Set(['github', 'huggingface']),
       ws: null,
       isRunning: false,
@@ -377,6 +399,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       loadMeta();
       renderMode();
+      renderDeliveryMode();
       renderSources();
     });
 
@@ -425,7 +448,28 @@
       document.getElementById('quick-pane').classList.toggle('hidden', !quickVisible);
       document.getElementById('custom-pane').classList.toggle('hidden', quickVisible);
       document.getElementById('form-title').textContent = quickVisible ? '快速发送今天的汇总' : '生成你的定制 Daily Trend';
-      document.getElementById('send-button-label').textContent = quickVisible ? '发送今日汇总' : '发送定制版 Daily Trend';
+      document.querySelectorAll('[data-send-button-label]').forEach(label => {
+        label.textContent = quickVisible ? '发送今日汇总' : '发送定制版 Daily Trend';
+      });
+    }
+
+    function switchDeliveryMode(mode) {
+      state.deliveryMode = mode;
+      renderDeliveryMode();
+    }
+
+    function renderDeliveryMode() {
+      document.querySelectorAll('.delivery-toggle').forEach(button => {
+        const active = button.dataset.deliveryMode === state.deliveryMode;
+        button.dataset.active = active ? 'true' : 'false';
+      });
+
+      const hintMap = {
+        source_emails: '当前按来源分别发送多封邮件。',
+        combined_report: '当前只发送一封跨来源汇总邮件。',
+        both: '当前会先逐封发送，再补一封总汇报。'
+      };
+      document.getElementById('delivery-mode-hint').textContent = hintMap[state.deliveryMode];
     }
 
     function toggleSource(source) {
@@ -473,7 +517,7 @@
         receiver: email,
         description,
         scholar_url: scholarUrl,
-        delivery_mode: 'combined_report'
+        delivery_mode: state.deliveryMode
       };
     }
 
@@ -514,7 +558,9 @@
       progressBar.style.width = '4%';
       statusText.textContent = '连接中';
       log.innerHTML = '';
-      document.getElementById('send-button').disabled = true;
+      document.querySelectorAll('[data-send-button]').forEach(button => {
+        button.disabled = true;
+      });
 
       const wsScheme = window.location.protocol === 'https:' ? 'wss' : 'ws';
       const wsUrl = `${wsScheme}://${window.location.host}${BASE_PATH}/ws/run`;
@@ -597,7 +643,9 @@
 
     function cleanupRun() {
       state.isRunning = false;
-      document.getElementById('send-button').disabled = false;
+      document.querySelectorAll('[data-send-button]').forEach(button => {
+        button.disabled = false;
+      });
       if (state.ws) {
         state.ws.close();
         state.ws = null;

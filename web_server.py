@@ -265,7 +265,7 @@ class RunRequest(BaseModel):
     description: str = ""
     researcher_profile: str = ""
     scholar_url: str = ""
-    delivery_mode: Literal["source_emails", "combined_report"] = "source_emails"
+    delivery_mode: Literal["source_emails", "combined_report", "both"] = "source_emails"
 
 
 # ============== Config API ==============
@@ -404,8 +404,9 @@ async def run_daily_recommender(req: RunRequest):
             researcher_profile_path = temp_root / "researcher_profile.md"
             researcher_profile_path.write_text(base_profile + "\n", encoding="utf-8")
 
-        should_generate_report = req.generate_report or req.delivery_mode == "combined_report"
-        should_send_combined_report = req.delivery_mode == "combined_report"
+        should_generate_report = req.generate_report or req.delivery_mode in ("combined_report", "both")
+        should_send_combined_report = req.delivery_mode in ("combined_report", "both")
+        should_skip_source_emails = req.delivery_mode == "combined_report"
 
         if should_send_combined_report and not receiver:
             raise ValueError("请输入接收邮件的邮箱地址。")
@@ -443,7 +444,9 @@ async def run_daily_recommender(req: RunRequest):
             if report_profile_path:
                 _append_arg(cmd, "--report_profile", report_profile_path)
             if should_send_combined_report:
-                cmd.extend(["--send_report_email", "--skip_source_emails"])
+                cmd.append("--send_report_email")
+            if should_skip_source_emails:
+                cmd.append("--skip_source_emails")
 
         if req.generate_ideas:
             if not researcher_profile_path:
