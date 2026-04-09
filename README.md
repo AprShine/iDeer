@@ -1,6 +1,6 @@
 <div align="center">
 
-# iDeer: 🦌 is all u need
+# 爱鹿: iDeer is all you need
 
 > 「这倒是提醒我了」
 
