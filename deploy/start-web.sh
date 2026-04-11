@@ -2,7 +2,7 @@
 
 # Daily Recommender Web UI 启动脚本
 
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/.."
 
 echo "╔════════════════════════════════════════════════════════╗"
 echo "║          Daily Recommender Web Server                  ║"

@@ -32,9 +32,9 @@ HISTORY_DIR = PROJECT_ROOT / "history"
 CONFIG_FILE = PROJECT_ROOT / ".web_config.json"
 CLIENT_CONFIG_FILE = PROJECT_ROOT / ".client_config.json"
 ENV_FILE = PROJECT_ROOT / ".env"
-PUBLIC_UI_FILE = PROJECT_ROOT / "public-web-ui.html"
-ADMIN_UI_FILE = PROJECT_ROOT / "web-ui.html"
-DESKTOP_UI_FILE = PROJECT_ROOT / "desktop-ui.html"
+PUBLIC_UI_FILE = PROJECT_ROOT / "templates" / "public-web-ui.html"
+ADMIN_UI_FILE = PROJECT_ROOT / "templates" / "web-ui.html"
+DESKTOP_UI_FILE = PROJECT_ROOT / "templates" / "desktop-ui.html"
 CLIENT_DIST_DIR = PROJECT_ROOT / "client" / "dist"
 CLIENT_DIST_INDEX_FILE = CLIENT_DIST_DIR / "index.html"
 DESCRIPTION_FILE = PROJECT_ROOT / "profiles" / "description.txt"
@@ -602,7 +602,7 @@ async def run_daily_recommender(req: RunRequest):
 
         # Pass profile hash for eval cache isolation
         if effective_description:
-            from cache_utils import stable_profile_hash
+            from core.cache_utils import stable_profile_hash
             _append_arg(cmd, "--profile_hash", stable_profile_hash(effective_description))
 
         if should_generate_report:

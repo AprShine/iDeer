@@ -55,7 +55,7 @@ Try `$IDEAS_DIR/{date}/ideas.json`.
 If not found, check `$HISTORY_DIR/*/date/json/` for scored items. If found, generate 3-5 ideas yourself (read items + researcher profile). Save:
 ```bash
 cd $PROJECT_DIR
-echo '$IDEAS_JSON' | python agent_bridge.py save-ideas --date {date}
+echo '$IDEAS_JSON' | python -m pipeline.agent_bridge save-ideas --date {date}
 ```
 
 If nothing exists, show available dates:

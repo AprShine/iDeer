@@ -18,7 +18,7 @@ from email.mime.text import MIMEText
 from email.utils import parseaddr, formataddr
 from pathlib import Path
 
-from config import load_dotenv
+from core.config import load_dotenv, PROJECT_ROOT
 
 
 def send_email_html(html: str, subject: str) -> bool:
@@ -71,7 +71,7 @@ def save_items(source: str, items: list[dict], date: str | None = None,
                save_dir: str = "./history") -> str:
     """Save scored items to history/{source}/{date}/json/ and a summary markdown."""
     date = date or datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    base_dir = os.path.dirname(os.path.abspath(__file__))
+    base_dir = str(PROJECT_ROOT)
     out_dir = os.path.join(base_dir, save_dir, source, date)
     json_dir = os.path.join(out_dir, "json")
     os.makedirs(json_dir, exist_ok=True)
@@ -102,7 +102,7 @@ def save_email_html(source: str, html: str, date: str | None = None,
                     save_dir: str = "./history") -> str:
     """Save rendered email HTML to history/{source}/{date}/."""
     date = date or datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    base_dir = os.path.dirname(os.path.abspath(__file__))
+    base_dir = str(PROJECT_ROOT)
     out_dir = os.path.join(base_dir, save_dir, source, date)
     os.makedirs(out_dir, exist_ok=True)
     path = os.path.join(out_dir, f"{source}_email.html")
@@ -116,7 +116,7 @@ def save_ideas(ideas: list[dict], date: str | None = None,
                save_dir: str = "./history") -> str:
     """Save research ideas to history/ideas/{date}/."""
     date = date or datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    base_dir = os.path.dirname(os.path.abspath(__file__))
+    base_dir = str(PROJECT_ROOT)
     out_dir = os.path.join(base_dir, save_dir, "ideas", date)
     os.makedirs(out_dir, exist_ok=True)
 
@@ -146,7 +146,7 @@ def cache_clean(targets: list[str], before: str | None = None, dry_run: bool = F
     targets: list of what to clean — all, fetch, eval, history, ideas, reports
     before:  only delete date-dirs older than this (YYYY-MM-DD), None = delete all
     """
-    base_dir = os.path.dirname(os.path.abspath(__file__))
+    base_dir = str(PROJECT_ROOT)
     target_set = set(targets)
     clean_all = "all" in target_set
 

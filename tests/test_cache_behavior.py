@@ -13,7 +13,7 @@ import shutil
 import tempfile
 import unittest
 
-from cache_utils import stable_profile_hash, atomic_write_json, safe_read_json
+from core.cache_utils import stable_profile_hash, atomic_write_json, safe_read_json
 
 
 class TestStableProfileHash(unittest.TestCase):

@@ -4,8 +4,8 @@ import os
 import re
 from datetime import datetime
 
-from base_source import BaseSource
-from config import LLMConfig, CommonConfig
+from sources.base import BaseSource
+from core.config import LLMConfig, CommonConfig
 from email_utils.base_template import get_stars
 from email_utils.twitter_template import get_tweet_block_html
 from fetchers.profile_fetcher import build_profile_text_from_urls

@@ -1,6 +1,6 @@
 import argparse
 import os
-from config import LLMConfig, EmailConfig, CommonConfig, load_dotenv
+from core.config import LLMConfig, EmailConfig, CommonConfig, load_dotenv
 from sources import SOURCE_REGISTRY
 
 
@@ -174,7 +174,7 @@ def main():
 
     # Handle cache clean (can run standalone without --sources)
     if args.cache_clean is not None:
-        from agent_bridge import cache_clean
+        from pipeline.agent_bridge import cache_clean
         targets = args.cache_clean if args.cache_clean else ["all"]
         cache_clean(targets, before=args.cache_clean_before)
         if not args.sources:
@@ -205,7 +205,7 @@ def main():
         description_text = f.read()
 
     # Compute profile hash for cache isolation
-    from cache_utils import stable_profile_hash
+    from core.cache_utils import stable_profile_hash
     profile_hash = getattr(args, "profile_hash", "") or stable_profile_hash(description_text)
 
     # Build configs
@@ -291,7 +291,7 @@ def main():
         print("Generating cross-source report...")
         print(f"{'='*60}")
 
-        from report_generator import ReportGenerator
+        from pipeline.report_generator import ReportGenerator
 
         report_profile_path = args.report_profile
         if not report_profile_path:
@@ -329,7 +329,7 @@ def main():
         print("Generating research ideas...")
         print(f"{'='*60}")
 
-        from idea_generator import IdeaGenerator
+        from pipeline.idea_generator import IdeaGenerator
 
         generator = IdeaGenerator(
             all_recs=all_recs,

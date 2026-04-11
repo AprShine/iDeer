@@ -162,7 +162,7 @@ def cmd_fetch(args):
         argv.extend(["--content_type"] + args.content_type)
 
     sys.argv = argv
-    from agent_bridge import main
+    from pipeline.agent_bridge import main
     main()
 
 
@@ -180,7 +180,7 @@ def cmd_clean(args):
         argv.append("--dry-run")
 
     sys.argv = argv
-    from agent_bridge import main
+    from pipeline.agent_bridge import main
     main()
 
 

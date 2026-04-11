@@ -9,44 +9,40 @@ Run with `--sources github huggingface twitter` to select sources. Each source i
 ### Directory Structure
 
 ```
-daily-recommender/
+iDeer/
   main.py                          # Unified CLI entry point
-  config.py                        # Config dataclasses (LLMConfig, EmailConfig, CommonConfig)
-  base_source.py                   # BaseSource abstract base class
-  requirements.txt
-  scripts/run_daily.sh             # Launch script
-  profiles/
-    description.txt                # User interest description
-    researcher_profile.md          # Richer profile for ideas / reports
-    x_accounts.txt                 # Static X accounts to monitor
-  docs/
-    TECHNICAL.md
-  state/
-    x_accounts.discovered.txt      # Persisted discovery watchlist
+  cli.py                           # setuptools CLI wrapper (`ideer` command)
+  web_server.py                    # FastAPI web backend
+
+  core/                            # Foundational modules
+    config.py                      # Config dataclasses, load_dotenv, PROJECT_ROOT
+    cache_utils.py                 # Profile hashing, atomic JSON I/O
+
   sources/
     __init__.py                    # SOURCE_REGISTRY
+    base.py                        # BaseSource abstract base class
+    arxiv_source.py                # ArXivSource(BaseSource)
     github_source.py               # GitHubSource(BaseSource)
     huggingface_source.py          # HuggingFaceSource(BaseSource)
+    semanticscholar_source.py      # SemanticScholarSource(BaseSource)
     twitter_source.py              # TwitterSource(BaseSource)
+
+  pipeline/                        # Orchestration and generation
+    agent_bridge.py                # Agent-driven pipeline utilities
+    idea_generator.py              # Research idea generation
+    report_generator.py            # Cross-source report generation
+
   llm/
-    __init__.py
     GPT.py                         # OpenAI-compatible API
     Ollama.py                      # Ollama local model
-  fetchers/
-    __init__.py
-    github_fetcher.py              # GitHub Trending scraper
-    huggingface_fetcher.py         # HuggingFace API client
-    twitter_fetcher.py             # RapidAPI twitter-api45 client
-  email_utils/
-    __init__.py
-    base_template.py               # Shared HTML framework, stars, summary styles
-    github_template.py             # GitHub repo card template
-    huggingface_template.py        # HF paper/model card templates
-    twitter_template.py            # X/Twitter tweet card template
+
+  fetchers/                        # Data fetchers per source
+  email_utils/                     # Email HTML templates per source
+  templates/                       # Web UI HTML files
+  deploy/                          # Deployment configs (PM2, start script)
+  scripts/run_daily.sh             # Launch script
+  profiles/                        # User interest & researcher profiles
   history/                         # Cache organized by source/date
-    github/{date}/json/
-    huggingface/{date}/json/
-    twitter/{date}/json/
 ```
 
 ## 2. Setup and Running
@@ -281,7 +277,7 @@ Then users can use `--sources xxx`.
 | Aspect | Old (2 separate projects) | New (unified framework) |
 |--------|--------------------------|------------------------|
 | Projects | 2 independent directories | 1 unified project |
-| Code reuse | llm/, email duplicated | Shared llm/, base_source.py, email_utils/ |
+| Code reuse | llm/, email duplicated | Shared llm/, sources/base.py, email_utils/ |
 | Running | Execute 2 scripts separately | Single command with --sources |
 | Extensibility | Copy entire project for new source | Implement BaseSource + register |
 | Config | Separate launcher each | Unified config, source args with prefix |

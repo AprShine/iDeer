@@ -34,11 +34,11 @@ If `gh` is not authenticated, ask the user to run `gh auth login` first or manua
 ## Constants
 
 - **PROJECT_DIR** = `~/Documents/daily-recommender`
-- **BRIDGE** = `python agent_bridge.py` (run from PROJECT_DIR)
+- **BRIDGE** = `python -m pipeline.agent_bridge` (run from PROJECT_DIR)
 
 ## Email rules
 
-- Use code-based delivery only: `python agent_bridge.py send-email`, `main.py`, or `scripts/run_daily.sh` with SMTP from `.env`.
+- Use code-based delivery only: `python -m pipeline.agent_bridge send-email`, `main.py`, or `scripts/run_daily.sh` with SMTP from `.env`.
 - Never use the user's desktop mail client, personal mail app, or OS-integrated mail account as a fallback.
 - In an interactive run, if the user has not explicitly asked for a live send in this session, ask before sending email.
 - In an interactive run where the user wants email but SMTP is missing or incomplete, ask whether to stop or continue as a dry run.
@@ -161,10 +161,10 @@ For each selected source, run the bridge fetcher:
 
 ```bash
 cd $PROJECT_DIR
-python agent_bridge.py fetch arxiv --categories cs.AI cs.CL cs.LG --max 50
-python agent_bridge.py fetch huggingface --content_type papers --max 30
-python agent_bridge.py fetch github --max 20
-python agent_bridge.py fetch semanticscholar --queries "agent safety" "trustworthy AI" --max 30
+python -m pipeline.agent_bridge fetch arxiv --categories cs.AI cs.CL cs.LG --max 50
+python -m pipeline.agent_bridge fetch huggingface --content_type papers --max 30
+python -m pipeline.agent_bridge fetch github --max 20
+python -m pipeline.agent_bridge fetch semanticscholar --queries "agent safety" "trustworthy AI" --max 30
 ```
 
 Each command prints JSON to stdout. Save output to a temp file or read directly.
@@ -215,8 +215,8 @@ Present this summary directly in the conversation.
 
 ```bash
 cd $PROJECT_DIR
-echo '$SCORED_ITEMS_JSON' | python agent_bridge.py save-items arxiv
-echo '$SCORED_ITEMS_JSON' | python agent_bridge.py save-items huggingface
+echo '$SCORED_ITEMS_JSON' | python -m pipeline.agent_bridge save-items arxiv
+echo '$SCORED_ITEMS_JSON' | python -m pipeline.agent_bridge save-items huggingface
 ```
 
 ## Phase 6: Send email (if enabled)
@@ -229,7 +229,7 @@ echo '$SCORED_ITEMS_JSON' | python agent_bridge.py save-items huggingface
 4. Send through the repo's code path only:
 ```bash
 cd $PROJECT_DIR
-echo '$EMAIL_HTML' | python agent_bridge.py send-email --subject "iDeer Daily $(date +%Y/%m/%d)"
+echo '$EMAIL_HTML' | python -m pipeline.agent_bridge send-email --subject "iDeer Daily $(date +%Y/%m/%d)"
 ```
 5. Do not use Apple Mail, Outlook, Mail.app, or any personal mail client to send the digest.
 
@@ -253,7 +253,7 @@ echo '$EMAIL_HTML' | python agent_bridge.py send-email --subject "iDeer Daily $(
 }
 ```
 
-4. Save: `echo '$IDEAS_JSON' | python agent_bridge.py save-ideas`
+4. Save: `echo '$IDEAS_JSON' | python -m pipeline.agent_bridge save-ideas`
 5. Present in conversation.
 
 ## Scheduling
@@ -274,13 +274,13 @@ When running as a scheduled/automated task, always use **auto** mode (no interac
 
 | Action | Command |
 |--------|---------|
-| Fetch arXiv | `python agent_bridge.py fetch arxiv --categories cs.AI cs.CL --max 50` |
-| Fetch HF | `python agent_bridge.py fetch huggingface --content_type papers --max 30` |
-| Fetch GitHub | `python agent_bridge.py fetch github --max 20` |
-| Fetch SS | `python agent_bridge.py fetch semanticscholar --queries "q1" "q2" --max 30` |
-| Save items | `echo JSON | python agent_bridge.py save-items SOURCE` |
-| Save ideas | `echo JSON | python agent_bridge.py save-ideas` |
-| Send email | `echo HTML | python agent_bridge.py send-email --subject "title"` |
+| Fetch arXiv | `python -m pipeline.agent_bridge fetch arxiv --categories cs.AI cs.CL --max 50` |
+| Fetch HF | `python -m pipeline.agent_bridge fetch huggingface --content_type papers --max 30` |
+| Fetch GitHub | `python -m pipeline.agent_bridge fetch github --max 20` |
+| Fetch SS | `python -m pipeline.agent_bridge fetch semanticscholar --queries "q1" "q2" --max 30` |
+| Save items | `echo JSON | python -m pipeline.agent_bridge save-items SOURCE` |
+| Save ideas | `echo JSON | python -m pipeline.agent_bridge save-ideas` |
+| Send email | `echo HTML | python -m pipeline.agent_bridge send-email --subject "title"` |
 
 ## What NOT to do
 

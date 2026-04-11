@@ -13,8 +13,8 @@ from urllib.parse import parse_qs, urljoin, urlparse
 import requests
 from bs4 import BeautifulSoup
 
-from base_source import BaseSource
-from config import CommonConfig, EmailConfig, LLMConfig
+from sources.base import BaseSource
+from core.config import CommonConfig, EmailConfig, LLMConfig, PROJECT_ROOT
 from email_utils.idea_template import render_ideas_email
 from llm.GPT import GPT
 from llm.Ollama import Ollama
@@ -217,7 +217,7 @@ class IdeaGenerator:
 
         self.model = self._build_model(llm_config)
 
-        base_dir = os.path.dirname(os.path.abspath(__file__))
+        base_dir = str(PROJECT_ROOT)
         self.save_dir = os.path.join(base_dir, common_config.save_dir, "ideas", self.run_date)
         self.email_cache_path = os.path.join(self.save_dir, "ideas_email.html")
         if common_config.save:

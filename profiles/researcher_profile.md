@@ -30,7 +30,7 @@
 <!--
 TODO: Populate from Google Scholar.
 To auto-fetch, provide your Google Scholar profile URL and run:
-  python -c "from idea_generator import fetch_scholar_publications; fetch_scholar_publications('SCHOLAR_ID')"
+  python -c "from pipeline.idea_generator import fetch_scholar_publications; fetch_scholar_publications('SCHOLAR_ID')"
 -->
 
 - (Pending Google Scholar integration — please provide your Scholar profile URL to auto-populate)

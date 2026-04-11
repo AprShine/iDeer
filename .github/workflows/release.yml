@@ -47,11 +47,9 @@ jobs:
             --add-data "fetchers:fetchers" \
             --add-data "sources:sources" \
             --add-data "llm:llm" \
-            --add-data "cache_utils.py:." \
-            --add-data "config.py:." \
-            --add-data "base_source.py:." \
-            --add-data "idea_generator.py:." \
-            --add-data "report_generator.py:." \
+            --add-data "core:core" \
+            --add-data "pipeline:pipeline" \
+            --add-data "templates:templates" \
             --hidden-import=uvicorn.logging \
             --hidden-import=uvicorn.loops \
             --hidden-import=uvicorn.loops.auto \

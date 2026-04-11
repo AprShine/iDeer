@@ -52,14 +52,8 @@ ideer = "cli:main"
 py-modules = [
     "cli",
     "main",
-    "config",
-    "base_source",
-    "cache_utils",
-    "agent_bridge",
-    "idea_generator",
-    "report_generator",
     "web_server",
 ]
 
 [tool.setuptools.packages.find]
-include = ["sources*", "fetchers*", "email_utils*", "llm*"]
+include = ["core*", "sources*", "fetchers*", "email_utils*", "llm*", "pipeline*"]

@@ -2,8 +2,8 @@ import argparse
 import json
 import time
 
-from base_source import BaseSource
-from config import LLMConfig, CommonConfig
+from sources.base import BaseSource
+from core.config import LLMConfig, CommonConfig
 from fetchers.github_fetcher import get_trending_repos
 from email_utils.base_template import get_stars
 from email_utils.github_template import get_repo_block_html

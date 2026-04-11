@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from config import LLMConfig, EmailConfig, CommonConfig
+from core.config import LLMConfig, EmailConfig, CommonConfig, PROJECT_ROOT
 from llm.GPT import GPT
 from llm.Ollama import Ollama
 from email_utils.base_template import framework, get_stars, get_summary_html, render_summary_sections, get_empty_html
@@ -33,7 +33,7 @@ class BaseSource(ABC):
         self.profile_hash = common_config.profile_hash
         self.lock = threading.Lock()
 
-        base_dir = os.path.dirname(os.path.abspath(__file__))
+        base_dir = str(PROJECT_ROOT)
 
         # --- Cache layer 1: shared fetch cache (interest-independent) ---
         self.fetch_cache_dir = os.path.join(
@@ -143,7 +143,7 @@ class BaseSource(ABC):
 
     def _load_fetch_cache(self, key: str) -> list[dict] | None:
         """Load shared fetch cache (interest-independent)."""
-        from cache_utils import safe_read_json
+        from core.cache_utils import safe_read_json
         path = os.path.join(self.fetch_cache_dir, f"{key}.json")
         data = safe_read_json(path)
         if data is not None and isinstance(data, list):
@@ -152,7 +152,7 @@ class BaseSource(ABC):
 
     def _save_fetch_cache(self, key: str, items: list[dict]):
         """Save shared fetch cache (interest-independent)."""
-        from cache_utils import atomic_write_json
+        from core.cache_utils import atomic_write_json
         path = os.path.join(self.fetch_cache_dir, f"{key}.json")
         try:
             atomic_write_json(path, items)
@@ -160,7 +160,7 @@ class BaseSource(ABC):
             print(f"[{self.name}] Fetch cache write failed: {e}")
 
     def process_item(self, item: dict, max_retries: int = 5) -> dict | None:
-        from cache_utils import atomic_write_json, safe_read_json
+        from core.cache_utils import atomic_write_json, safe_read_json
 
         retry_count = 0
         cache_id = self.get_item_cache_id(item)

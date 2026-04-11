@@ -1,8 +1,8 @@
 import argparse
 import json
 
-from base_source import BaseSource
-from config import LLMConfig, CommonConfig
+from sources.base import BaseSource
+from core.config import LLMConfig, CommonConfig
 from fetchers.arxiv_fetcher import fetch_papers_for_categories
 from email_utils.base_template import get_stars
 from email_utils.arxiv_template import get_paper_block_html

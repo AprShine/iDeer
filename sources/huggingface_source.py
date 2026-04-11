@@ -2,8 +2,8 @@ import argparse
 import json
 import time
 
-from base_source import BaseSource
-from config import LLMConfig, CommonConfig
+from sources.base import BaseSource
+from core.config import LLMConfig, CommonConfig
 from fetchers.huggingface_fetcher import get_daily_papers, get_trending_models_api
 from email_utils.base_template import get_stars, framework, get_empty_html
 from email_utils.huggingface_template import get_paper_block_html, get_model_block_html

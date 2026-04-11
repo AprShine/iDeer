@@ -8,8 +8,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from config import CommonConfig, LLMConfig
-from idea_generator import IdeaGenerator
+from core.config import CommonConfig, LLMConfig
+from pipeline.idea_generator import IdeaGenerator
 
 
 class DummyModel:

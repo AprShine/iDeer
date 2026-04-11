@@ -8,8 +8,8 @@ import re
 from datetime import datetime, timezone
 from typing import Any
 
-from base_source import BaseSource
-from config import CommonConfig, EmailConfig, LLMConfig
+from sources.base import BaseSource
+from core.config import CommonConfig, EmailConfig, LLMConfig, PROJECT_ROOT
 from email_utils.report_template import render_report_email
 from llm.GPT import GPT
 from llm.Ollama import Ollama
@@ -47,7 +47,7 @@ class ReportGenerator:
 
         self.model = self._build_model(llm_config)
 
-        base_dir = os.path.dirname(os.path.abspath(__file__))
+        base_dir = str(PROJECT_ROOT)
         self.save_dir = os.path.join(base_dir, common_config.save_dir, "reports", self.run_date)
         self.email_cache_path = os.path.join(self.save_dir, "report.html")
 
