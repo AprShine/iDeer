@@ -34,7 +34,7 @@ npm run preview
 ### 依赖
 
 ```bash
-pip install pywebview pyinstaller httpx
+pip install pywebview pyinstaller
 ```
 
 ### 打包步骤
@@ -58,15 +58,12 @@ pyinstaller --onefile --windowed --name iDeer --add-data "webui/dist;webui/dist"
 ### 与 Tauri 的对比
 
 | 维度       | PyWebView + PyInstaller        | Tauri                        |
-| ---------- | ------------------------------ | ---------------------------- |
-| 后端语言   | Python（无需重写）             | Rust（需要重写后端）         |
+| ---------- | ------------------------------ | ----------------------------|
+| 后端语言   | Python                          | Rust                       |
 | 打包体积   | ~40-80 MB（含 Python 运行时）  | ~5-10 MB                     |
-| 窗口渲染   | 系统 WebView（Edge / WKWebView）| 系统 WebView（同左）         |
-| 启动速度   | 较慢（Python 解释器初始化）     | 快                           |
-| 维护成本   | 低（现有 Python 代码直接复用）  | 高（需要用 Rust 重写全部逻辑）|
-| 跨平台     | Windows / macOS / Linux        | Windows / macOS / Linux      |
+| 窗口渲染   | 系统 WebView（Edge / WKWebView）| 系统 WebView                |
+| 启动速度   | 较慢（Python 解释器初始化）     | 相对快                        |
 
-**选择建议：** 如果后端逻辑较复杂且已有成熟的 Python 实现，PyWebView 方案更合适，避免用 Rust 重写大量代码。如果追求最小体积和最快启动速度，且愿意投入 Rust 开发成本，可以考虑 Tauri。
 
 ### 当前状态
 
